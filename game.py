@@ -1,4 +1,6 @@
 import pygame
+from model.position import Position
+from model.player import Player
 
 pygame.init()
 
@@ -10,17 +12,16 @@ clock = pygame.time.Clock()
 
 pygame.display.set_caption('Help MacGyver Escape')
 
-player = pygame.image.load("resources/MacGyver.png")
-player = pygame.transform.scale(player, (50, 50))
-
-guard = pygame.image.load("resources/Gardien.png")
+guard = pygame.image.load('resources/Guard.png')
 guard = pygame.transform.scale(guard, (50, 50))
 
 
 def main():
     game_is_running = True
 
-    player_position = [300, 300]
+    player_position = Position([300, 300])
+    player = Player(player_position, 'MacGyver.png')
+
     guard_position = [500, 750]
 
     while game_is_running:
@@ -34,44 +35,23 @@ def main():
                 game_is_running = False
 
             elif event.type == pygame.KEYUP:
-                x_axis = player_position[0]
-                y_axis = player_position[1]
-
                 if event.key == pygame.K_RIGHT:
-                    if x_axis + 50 <= 750:
-                        print('Right KeyUp')
-                        x_axis += 50
+                    player.move_right()
 
                 elif event.key == pygame.K_LEFT:
-                    if x_axis - 50 >= 0:
-                        print('Left KeyUp')
-                        x_axis -= 50
+                    player.move_left()
 
                 elif event.key == pygame.K_UP:
-                    if y_axis - 50 >= 0:
-                        print('Up KeyUp')
-                        y_axis -= 50
+                    player.move_up()
 
                 elif event.key == pygame.K_DOWN:
-                    if y_axis + 50 <= 750:
-                        print('Down KeyUp')
-                        y_axis += 50
+                    player.move_down()
 
-                player_position = [x_axis, y_axis]
-
-        # if abs(player_position[0] - guard_position[0]) == 50 or abs(player_position[1] - guard_position[1]):
-        #     print('near enough!')
-
-        # print('x_axis: {}'.format(abs(player_position[0] - guard_position[0])))
-        # print('y_axis: {}'.format(abs(player_position[1] - guard_position[1])))
-        if abs(player_position[0] - guard_position[0]) == 50 and abs(player_position[1] - guard_position[1]) == 0:
-            print('You WON!')
-            game_is_running = False
-        elif abs(player_position[0] - guard_position[0]) == 0 and abs(player_position[1] - guard_position[1]) == 50:
+        if abs(player.position.get_x - guard_position[0]) + abs(player.position.get_y - guard_position[1]) == 50:
             print('You WON!')
             game_is_running = False
 
-        display.blit(player, player_position)
+        player.draw(display)
         display.blit(guard, guard_position)
         pygame.display.update()
 
