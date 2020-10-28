@@ -75,7 +75,7 @@ class Map:
             Create a Structure for a tile.
         """
 
-        tile = Structure(position, game_variables.tiles_image)
+        tile = Structure(position, game_variables.TILES_IMAGE)
 
         self.TILES.append(tile)
 
@@ -85,7 +85,7 @@ class Map:
             Create a Structure for a wall.
         """
 
-        wall = Structure(position, game_variables.walls_image)
+        wall = Structure(position, game_variables.WALLS_IMAGE)
 
         self.WALLS.append(wall)
 
